@@ -22,7 +22,7 @@ func initLog() *logrus.Entry {
 	} else {
 		logrus.SetFormatter(&logrus.JSONFormatter{})
 	}
-	return logrus.WithField("service", "api-techcode")
+	return logrus.WithField("service", "quick-count-api")
 }
 
 func main() {
@@ -94,6 +94,9 @@ func main() {
 	e.GET("/", func(c echo.Context) error {
 		return c.String(http.StatusOK, "Server Health ✅.")
 	})
+
+	// komentari jika tidak ingin menggunakan migration
+	// migration.Migration(db)
 
 	logger.Fatal(e.Start(os.Getenv("PORT")))
 }

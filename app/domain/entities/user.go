@@ -10,7 +10,6 @@ type User struct {
 	Base
 	Username string
 	Password string
-	Email    string
 	RoleUUID uuid.UUID
 	Role     Role `gorm:"references:UUID;constraint:OnUpdate:CASCADE,OnDelete:CASCADE;"`
 }

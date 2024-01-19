@@ -76,3 +76,4 @@ go.work
 /vendor
 tmp
 temp
+.env

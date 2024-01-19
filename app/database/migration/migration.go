@@ -9,6 +9,10 @@ func Migration(db *gorm.DB) {
 	data := []interface{}{
 		&entities.Role{},
 		&entities.User{},
+		&entities.TotalSuara{},
+		&entities.TPS{},
+		&entities.Paslon{},
+		&entities.Suara{},
 	}
 
 	for _, table := range data {

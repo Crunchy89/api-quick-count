@@ -25,7 +25,7 @@ func NewV1Routes(
 }
 
 func (r *V1Routes) Routes() {
-	api := r.echo.Group("api").Group("/v1")
+	api := r.echo.Group("api")
 	roleApi := api.Group("/role")
 	roleApi.Use(r.middleware.VerifyAccess())
 	roleApi.GET("fetch/all", r.roleHandler.GetRole)
