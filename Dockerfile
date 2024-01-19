@@ -17,7 +17,7 @@ COPY . .
 RUN go build -v -o /usr/local/bin/api
 
 # Expose port 80
-EXPOSE 80/tcp
+EXPOSE 1234/tcp
 
 # Run the executable
 CMD ["api"]
