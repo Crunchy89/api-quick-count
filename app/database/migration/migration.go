@@ -9,17 +9,23 @@ func Migration(db *gorm.DB) {
 	data := []interface{}{
 		&entities.Role{},
 		&entities.User{},
-		&entities.TotalSuara{},
-		&entities.TPS{},
+		&entities.Provinsi{},
+		&entities.Kabupaten{},
+		&entities.Kecamatan{},
+		&entities.Desa{},
+		&entities.Partai{},
 		&entities.Paslon{},
-		&entities.Suara{},
+		&entities.TPS{},
+		&entities.UserTPS{},
+		&entities.SuaraTPS{},
 	}
 
 	for _, table := range data {
 		if db.Migrator().HasTable(table) {
 			db.Migrator().DropTable(table)
-			continue
 		}
+	}
+	for _, table := range data {
 		db.Migrator().CreateTable(table)
 	}
 }

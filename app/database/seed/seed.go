@@ -8,11 +8,11 @@ import (
 )
 
 func Seed(db *gorm.DB) {
-	superAdmin := &entities.Role{Name: "SuperAdmin"}
+	superAdmin := &entities.Role{Name: "Admin"}
 	if err := db.Create(superAdmin).Error; err != nil {
 		log.Fatalf("error %s", err.Error())
 	}
-	userSuperAdmin := &entities.User{Username: "superadmin", Password: "silahkanakses", RoleUUID: superAdmin.UUID}
+	userSuperAdmin := &entities.User{Username: "admin", Password: "admin", RoleUUID: superAdmin.UUID}
 	if err := db.Create(userSuperAdmin).Error; err != nil {
 		log.Fatalf("error %s", err.Error())
 	}
