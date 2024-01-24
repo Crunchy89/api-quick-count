@@ -1,7 +1,8 @@
 version: '3'
 
 services:
-  api-quick-count:
-    image: api-quick-count:latest
+  myapp:
+    build:
+      context: .
     ports:
       - "8080:8080"
