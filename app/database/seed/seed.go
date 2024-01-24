@@ -12,8 +12,16 @@ func Seed(db *gorm.DB) {
 	if err := db.Create(superAdmin).Error; err != nil {
 		log.Fatalf("error insert role %s", err.Error())
 	}
+	petugas := &entities.Role{Name: "Petugas"}
+	if err := db.Create(petugas).Error; err != nil {
+		log.Fatalf("error insert role %s", err.Error())
+	}
 	userSuperAdmin := &entities.User{Username: "admin", Password: "admin", Active: true, IsOnline: false, RoleUUID: superAdmin.UUID}
 	if err := db.Create(userSuperAdmin).Error; err != nil {
+		log.Fatalf("error insert user %s", err.Error())
+	}
+	userPetugas := &entities.User{Username: "petugas", Password: "petugas", Active: true, IsOnline: false, RoleUUID: petugas.UUID}
+	if err := db.Create(userPetugas).Error; err != nil {
 		log.Fatalf("error insert user %s", err.Error())
 	}
 	provinsi := &entities.Provinsi{

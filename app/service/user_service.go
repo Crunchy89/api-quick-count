@@ -20,17 +20,20 @@ type UserService interface {
 }
 
 type baseUserService struct {
+	roleRepo repository.RoleRepository
 	userRepo repository.UserRepository
 	socket   *centrifuge.Node
 	jwt      jwt.JWTHelper
 }
 
 func NewUserService(
+	roleRepo repository.RoleRepository,
 	userRepo repository.UserRepository,
 	socket *centrifuge.Node,
 	jwt jwt.JWTHelper,
 ) UserService {
 	return &baseUserService{
+		roleRepo: roleRepo,
 		userRepo: userRepo,
 		socket:   socket,
 		jwt:      jwt,
@@ -46,13 +49,17 @@ func (r *baseUserService) AuthService(data payloads.Auth) (*responses.AuthRespon
 	if !check {
 		return nil, errors.New("password salah")
 	}
+	role, err := r.roleRepo.GetByUUID(user.RoleUUID)
+	if err != nil {
+		return nil, err
+	}
 	token := r.jwt.GenerateTokenPublic(user.UUID)
 	userRes := new(responses.UserResponseJWT)
 	userRes.Username = user.Username
 	userRes.Active = user.Active
 	userRes.IsOnline = user.IsOnline
 	userRes.Role = "petugas"
-	if user.ID == 1 {
+	if role.ID == 1 {
 		userRes.Role = "admin"
 	}
 

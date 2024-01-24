@@ -13,7 +13,8 @@ type RoleRepository interface {
 	Create(role *entities.Role) (*uuid.UUID, error)
 	GetAll() ([]*responses.RoleResponse, error)
 	GetByID(id uint) (*responses.RoleResponse, error)
-	GetByUUID(uuid uuid.UUID) (*responses.RoleResponse, error)
+	GetByUUID(uuid uuid.UUID) (*entities.Role, error)
+	GetByUUIDResponse(uuid uuid.UUID) (*responses.RoleResponse, error)
 	UpdateById(role *entities.Role) error
 	UpdateByUuid(role *entities.Role) error
 	DeleteById(id uint) error
@@ -61,7 +62,14 @@ func (r *baseRoleRepository) GetByID(id uint) (*responses.RoleResponse, error) {
 	return role, nil
 }
 
-func (r *baseRoleRepository) GetByUUID(uuid uuid.UUID) (*responses.RoleResponse, error) {
+func (r *baseRoleRepository) GetByUUID(uuid uuid.UUID) (*entities.Role, error) {
+	role := new(entities.Role)
+	if err := r.table.Where("uuid = ?", uuid).First(role).Error; err != nil {
+		return nil, err
+	}
+	return role, nil
+}
+func (r *baseRoleRepository) GetByUUIDResponse(uuid uuid.UUID) (*responses.RoleResponse, error) {
 	role := new(responses.RoleResponse)
 	if err := r.table.Where("uuid = ?", uuid).First(&entities.Role{}).Scan(role).Error; err != nil {
 		return nil, err
