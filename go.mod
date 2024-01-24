@@ -1,6 +1,6 @@
 module github.com/crunchy89/api-quick-count
 
-go 1.18.1
+go 1.18
 
 require (
 	github.com/centrifugal/centrifuge v0.30.6
