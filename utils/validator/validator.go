@@ -21,7 +21,7 @@ func InitErrorHandler() echo.HTTPErrorHandler {
 	return func(err error, c echo.Context) {
 		report, ok := err.(*echo.HTTPError)
 		if !ok {
-			report = echo.NewHTTPError(http.StatusBadRequest, err.Error())
+			report = echo.NewHTTPError(http.StatusUnprocessableEntity, err.Error())
 		}
 
 		if castedObject, ok := err.(validator.ValidationErrors); ok {

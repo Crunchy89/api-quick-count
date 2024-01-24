@@ -39,8 +39,13 @@ func main() {
 	dsn := os.Getenv("MYSQL_DB_HOST")
 	db, err := gorm.Open(mysql.Open(dsn), &gorm.Config{})
 	if err != nil {
-		panic(err)
+		logger.Fatalf("error connect database %s", err)
 	}
+
+	// migration
+	migration.Migration(db)
+	// seed
+	seed.Seed(db)
 
 	e := echo.New()
 	if os.Getenv("ENVIRONMENT") == "production" {
@@ -96,11 +101,6 @@ func main() {
 	e.GET("/", func(c echo.Context) error {
 		return c.String(http.StatusOK, "Server Health ✅.")
 	})
-
-	// komentari jika tidak ingin menggunakan migration
-	migration.Migration(db)
-	// seed
-	seed.Seed(db)
 
 	logger.Fatal(e.Start(os.Getenv("PORT")))
 }

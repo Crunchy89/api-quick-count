@@ -27,6 +27,9 @@ func InitV1Routes(socket *centrifuge.Node, db *gorm.DB, logger *logrus.Entry, ec
 	roleRepository := repository.NewRoleRepository(db)
 	roleService := service.NewRoleService(roleRepository, socket)
 	roleHandler := http.NewRoleHandler(roleService)
-	v1Routes := routes.NewV1Routes(echo2, initMiddleware, roleHandler)
+	userRepository := repository.NewUserRepository(db)
+	userService := service.NewUserService(userRepository, socket, jwtHelper)
+	authHandler := http.NewAuthHandler(userService)
+	v1Routes := routes.NewV1Routes(echo2, initMiddleware, roleHandler, authHandler)
 	return v1Routes
 }

@@ -2,5 +2,6 @@ package entities
 
 type Provinsi struct {
 	Base
-	Provinsi string `gorm:"unique"`
+	Provinsi string
+	Kode     int `gorm:"unique"`
 }

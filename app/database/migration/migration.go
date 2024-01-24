@@ -1,6 +1,8 @@
 package migration
 
 import (
+	"log"
+
 	"github.com/crunchy89/api-quick-count/app/domain/entities"
 	"gorm.io/gorm"
 )
@@ -22,10 +24,16 @@ func Migration(db *gorm.DB) {
 
 	for _, table := range data {
 		if db.Migrator().HasTable(table) {
-			db.Migrator().DropTable(table)
+			if err := db.Migrator().DropTable(table); err != nil {
+				log.Fatalf("error drop table %s", err)
+				return
+			}
 		}
 	}
 	for _, table := range data {
-		db.Migrator().CreateTable(table)
+		if err := db.Migrator().CreateTable(table); err != nil {
+			log.Fatalf("error create table %s", err)
+			return
+		}
 	}
 }
