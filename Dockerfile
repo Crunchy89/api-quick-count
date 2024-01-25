@@ -1,17 +1,23 @@
-# Use the official Golang image as a base image
+# Use an official Golang runtime as a parent image
 FROM golang:latest
 
 # Set the working directory inside the container
 WORKDIR /app
 
-# Copy the Go application source code to the container
+# Copy only the go.mod and go.sum files to leverage Docker cache
+COPY go.mod go.sum ./
+
+# Download and verify dependencies
+RUN go mod download && go mod verify
+
+# Copy the rest of the application code
 COPY . .
 
 # Build the Go application
-RUN go build -o myapp .
+RUN go build -v -o /usr/local/bin/api-qc
 
-# Expose the port that the application will run on
-EXPOSE 5678
+# Expose port 80
+EXPOSE 80/tcp
 
-# Command to run the application
-CMD ["./myapp"]
+# Run the executable
+CMD ["api-qc"]
