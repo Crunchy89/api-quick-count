@@ -11,7 +11,7 @@ COPY . .
 RUN go build -o myapp .
 
 # Expose the port that the application will run on
-EXPOSE 8080
+EXPOSE 5678
 
 # Command to run the application
 CMD ["./myapp"]
