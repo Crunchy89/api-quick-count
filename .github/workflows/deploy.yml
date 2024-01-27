@@ -30,11 +30,18 @@ jobs:
           echo JWT_SECRET_KEY=${{ secrets.JWT_SECRET_KEY }}
           echo TEMP=temp
 
-
       - name: Build Docker image
         run: |
           docker build -t myapp:latest .
           docker save -o myapp.tar myapp:latest
+      
+      - name: Stoping Service
+        run: |
+          ssh ${{ secrets.VPS_USERNAME_KEY }}@${{ secrets.VPS_IP_KEY }} 'cd ~/code/tar && docker-compose down'
+
+      - name: Remove existing file on VPS
+        run: |
+          ssh ${{ secrets.VPS_USERNAME_KEY }}@${{ secrets.VPS_IP_KEY }} 'rm -f /path/to/old/file'
 
       - name: Transfer Docker image to VPS
         run: |
@@ -46,5 +53,4 @@ jobs:
 
       - name: Deploy using Docker Compose
         run: |
-          ssh ${{ secrets.VPS_USERNAME_KEY }}@${{ secrets.VPS_IP_KEY }} 'cd ~/code/tar && ls -la && cat docker-compose.yml'
           ssh ${{ secrets.VPS_USERNAME_KEY }}@${{ secrets.VPS_IP_KEY }} 'cd ~/code/tar && docker-compose up -d --build'

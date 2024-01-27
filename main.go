@@ -99,7 +99,7 @@ func main() {
 	e.Any("/socket", echo.WrapHandler(handler.ApiChannel(socketWsHandler)))
 
 	e.GET("/", func(c echo.Context) error {
-		return c.String(http.StatusOK, "Server Health ✅")
+		return c.String(http.StatusOK, "Server Health Up and Update")
 	})
 
 	logger.Fatal(e.Start(os.Getenv("PORT")))
