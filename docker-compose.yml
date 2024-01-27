@@ -14,7 +14,6 @@ services:
       - "traefik.http.routers.qc.entrypoints=web"
       - "traefik.http.services.qc.loadbalancer.server.port=80"
       - "traefik.docker.network=traefik_webgateway"
-
     networks:
       - traefik_webgateway
 
