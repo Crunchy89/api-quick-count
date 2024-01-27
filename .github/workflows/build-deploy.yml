@@ -36,7 +36,7 @@ jobs:
 
       - name: Remove existing file on VPS
         run: |
-          ssh ${{ secrets.VPS_USERNAME_KEY }}@${{ secrets.VPS_IP_KEY }} 'rm -f ${{ secrets.VPS_PATH_KEY }}'
+          ssh ${{ secrets.VPS_USERNAME_KEY }}@${{ secrets.VPS_IP_KEY }} 'rm -f ${{ secrets.VPS_PATH_KEY }}/api-quick-count.tar'
 
       - name: Transfer Docker image to VPS
         run: |
