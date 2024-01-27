@@ -5,8 +5,8 @@ import (
 	"os"
 
 	"github.com/centrifugal/centrifuge"
-	"github.com/crunchy89/api-quick-count/app/database/migration"
-	"github.com/crunchy89/api-quick-count/app/database/seed"
+	// "github.com/crunchy89/api-quick-count/app/database/migration"
+	// "github.com/crunchy89/api-quick-count/app/database/seed"
 	"github.com/crunchy89/api-quick-count/app/socket/handler"
 	"github.com/crunchy89/api-quick-count/app/socket/service"
 	"github.com/crunchy89/api-quick-count/utils/validator"
@@ -42,10 +42,10 @@ func main() {
 		logger.Fatalf("error connect database %s", err)
 	}
 
-	// migration
-	migration.Migration(db)
-	// seed
-	seed.Seed(db)
+	// // migration
+	// migration.Migration(db)
+	// // seed
+	// seed.Seed(db)
 
 	e := echo.New()
 	if os.Getenv("ENVIRONMENT") == "production" {
