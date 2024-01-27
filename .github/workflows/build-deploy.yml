@@ -20,6 +20,15 @@ jobs:
         run: |
           ssh -o StrictHostKeyChecking=no ${{ secrets.VPS_USERNAME_KEY }}@${{ secrets.VPS_IP_KEY }} 'echo "Connection successful"'
       
+      - name: Create .env file
+        run: |
+          touch .env
+          echo ENVIRONMENT=production
+          echo MYSQL_DB_HOST="${{ secrets.MYSQL_DB_HOST }}"
+          echo JWT_SECRET_KEY={{ secrets.JWT_SECRET_KEY }}
+          echo JWT_SECRET_KEY=${{ secrets.JWT_SECRET_KEY }}
+          echo TEMP=temp
+      
       - name: Build Docker image
         run: |
           docker build -t api-quick-count:latest .
