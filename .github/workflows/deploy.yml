@@ -3,7 +3,7 @@ name: Deploy to VPS
 on:
   push:
     branches:
-      - main
+      - master
 
 jobs:
   deploy:
@@ -16,7 +16,7 @@ jobs:
       - name: Set up SSH
         uses: webfactory/ssh-agent@v0.5.3
         with:
-          ssh-private-key: ${{ secrets.SSH_PRIVATE_KEY }}
+          ssh-private-key: ${{ secrets.VPS_SSH_KEY }}
 
       - name: Build Docker image
         run: |
@@ -25,12 +25,12 @@ jobs:
 
       - name: Transfer Docker image to VPS
         run: |
-          scp myapp.tar user@<VPS_IP>:~/path/to/destination
+          scp myapp.tar ${{ secrets.VPS_USERNAME_KEY }}@${{ secrets.VPS_IP_KEY }}:~/code/tar/
 
       - name: Load Docker image on VPS
         run: |
-          ssh user@<VPS_IP> 'docker load -i ~/path/to/destination/myapp.tar'
+          ssh ${{ secrets.VPS_USERNAME_KEY }}@${{ secrets.VPS_IP_KEY }} 'docker load -i ~/code/tar/myapp.tar'
 
       - name: Deploy using Docker Compose
         run: |
-          ssh user@<VPS_IP> 'cd ~/path/to/destination && docker-compose up -d'
+          ssh ${{ secrets.VPS_USERNAME_KEY }}@${{ secrets.VPS_IP_KEY }} 'cd ~/code/tar && docker-compose up -d'
