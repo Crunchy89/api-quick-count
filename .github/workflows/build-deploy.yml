@@ -31,12 +31,12 @@ jobs:
       
       - name: Build Docker image
         run: |
-          docker build -t api-quick-count:latest .
+          docker build --no-cache -t api-quick-count:latest .
           docker save -o api-quick-count.tar api-quick-count:latest
 
-      - name: Stoping Service
+      - name: Remove existing file on VPS
         run: |
-          ssh ${{ secrets.VPS_USERNAME_KEY }}@${{ secrets.VPS_IP_KEY }} 'cd ${{ secrets.VPS_PATH_KEY }} && docker-compose down'
+          ssh ${{ secrets.VPS_USERNAME_KEY }}@${{ secrets.VPS_IP_KEY }} 'rm -f ${{ secrets.VPS_PATH_KEY }}'
 
       - name: Transfer Docker image to VPS
         run: |
@@ -44,4 +44,4 @@ jobs:
 
       - name: Run Docker Compose
         run: |
-          ssh ${{ secrets.VPS_USERNAME_KEY }}@${{ secrets.VPS_IP_KEY }} 'cd ${{ secrets.VPS_PATH_KEY }} && docker-compose up -d --build'
+          ssh ${{ secrets.VPS_USERNAME_KEY }}@${{ secrets.VPS_IP_KEY }} 'cd ${{ secrets.VPS_PATH_KEY }} && docker-compose down && docker-compose up -d '
