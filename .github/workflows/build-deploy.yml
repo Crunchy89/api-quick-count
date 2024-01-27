@@ -22,14 +22,19 @@ jobs:
       - name: Check SSH connection to VPS
         run: |
           ssh -o StrictHostKeyChecking=no ${{ secrets.VPS_USERNAME_KEY }}@${{ secrets.VPS_IP_KEY }} 'echo "Connection successful"'
+      
+      - name: Build Docker image
+        run: |
+          docker build -t api-quick-count:latest .
+          docker save -o api-quick-count.tar api-quick-count:latest
 
       - name: Stoping Service
         run: |
-          ssh ${{ secrets.VPS_USERNAME_KEY }}@${{ secrets.VPS_IP_KEY }} 'cd ~/code/api-quick-count && docker-compose down'
+          ssh ${{ secrets.VPS_USERNAME_KEY }}@${{ secrets.VPS_IP_KEY }} 'cd ~/code/tar && docker-compose down'
 
-      - name: Pulling image on VPS
+      - name: Transfer Docker image to VPS
         run: |
-          ssh ${{ secrets.VPS_USERNAME_KEY }}@${{ secrets.VPS_IP_KEY }} 'cd ~/code/api-quick-count && git pull origin master'
+          scp api-quick-count.tar ${{ secrets.VPS_USERNAME_KEY }}@${{ secrets.VPS_IP_KEY }}:~/code/tar/
 
       - name: Run Docker Compose
         run: |
