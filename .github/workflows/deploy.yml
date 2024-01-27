@@ -17,12 +17,17 @@ jobs:
         uses: webfactory/ssh-agent@v0.5.3
         with:
           ssh-private-key: ${{ secrets.VPS_SSH_KEY }}
+      
+      - name: Check SSH connection to VPS
+        run: |
+          ssh -o StrictHostKeyChecking=no ${{ secrets.VPS_USERNAME_KEY }}@${{ secrets.VPS_IP_KEY }} 'echo "Connection successful"'
+
       - name: Create .env file
         run: |
           touch .env
           echo ENVIRONMENT=production
           echo MYSQL_DB_HOST="${{ secrets.MYSQL_DB_HOST }}"
-          echo JWT_SECRET_KEY={{ secrets.JWT_SECRET_KEY }}
+          echo JWT_SECRET_KEY=${{ secrets.JWT_SECRET_KEY }}
           echo TEMP=temp
 
 
@@ -41,4 +46,5 @@ jobs:
 
       - name: Deploy using Docker Compose
         run: |
+          ssh ${{ secrets.VPS_USERNAME_KEY }}@${{ secrets.VPS_IP_KEY }} 'cd ~/code/tar && ls -la && cat docker-compose.yml'
           ssh ${{ secrets.VPS_USERNAME_KEY }}@${{ secrets.VPS_IP_KEY }} 'cd ~/code/tar && docker-compose up -d --build'
