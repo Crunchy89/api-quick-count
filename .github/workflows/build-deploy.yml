@@ -36,12 +36,12 @@ jobs:
 
       - name: Stoping Service
         run: |
-          ssh ${{ secrets.VPS_USERNAME_KEY }}@${{ secrets.VPS_IP_KEY }} 'cd ~/code/tar && docker-compose down'
+          ssh ${{ secrets.VPS_USERNAME_KEY }}@${{ secrets.VPS_IP_KEY }} 'cd ${{ secrets.VPS_PATH_KEY }} && docker-compose down'
 
       - name: Transfer Docker image to VPS
         run: |
-          scp api-quick-count.tar ${{ secrets.VPS_USERNAME_KEY }}@${{ secrets.VPS_IP_KEY }}:~/code/tar/
+          scp api-quick-count.tar ${{ secrets.VPS_USERNAME_KEY }}@${{ secrets.VPS_IP_KEY }}:${{ secrets.VPS_PATH_KEY }}
 
       - name: Run Docker Compose
         run: |
-          ssh ${{ secrets.VPS_USERNAME_KEY }}@${{ secrets.VPS_IP_KEY }} 'cd ~/code/api-quick-count && docker-compose up -d --build'
+          ssh ${{ secrets.VPS_USERNAME_KEY }}@${{ secrets.VPS_IP_KEY }} 'cd ${{ secrets.VPS_PATH_KEY }} && docker-compose up -d --build'
