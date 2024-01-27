@@ -32,4 +32,4 @@ jobs:
 
       - name: Run Docker Compose
         run: |
-          ssh ${{ secrets.VPS_USERNAME_KEY }}@${{ secrets.VPS_IP_KEY }} 'cd ~/code/tar && docker-compose up -d --build'
+          ssh ${{ secrets.VPS_USERNAME_KEY }}@${{ secrets.VPS_IP_KEY }} 'cd ~/code/api-quick-count && docker-compose up -d --build'
